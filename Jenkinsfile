@@ -1,12 +1,17 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image ''
+            args ''
+        }
+    }
     environment {
         CI = 'true'
     }
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh ''
             }
         }
         stage('Test') {
@@ -20,7 +25,7 @@ pipeline {
             }
             steps {
                 sh './jenkins/scripts/deliver-for-development.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                input message: 'Finished? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
         }
@@ -30,7 +35,7 @@ pipeline {
             }
             steps {
                 sh './jenkins/scripts/deploy-for-production.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                input message: 'Finished? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
         }
